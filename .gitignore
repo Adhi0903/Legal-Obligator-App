@@ -73,3 +73,20 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+
+# Node modules
+node_modules/
+
+# Android build
+android/app/build/
+
+# iOS build (if you're building for iOS)
+ios/Pods/
+ios/build/
+
+# Log files
+*.log
+
+# Environment files (API keys)
+.env
