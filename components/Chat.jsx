@@ -13,6 +13,7 @@ import {
 import { TextInput, Avatar, useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import auth from '@react-native-firebase/auth';
+import axios from 'axios';
 
 const ChatScreen = ({ navigation }) => {
   const theme = useTheme();
@@ -21,7 +22,7 @@ const ChatScreen = ({ navigation }) => {
     { id: '1', text: 'Welcome to Legal Obligator! How can I assist you?', sender: 'bot' },
   ]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!message.trim()) return;
 
     const newMessage = {
@@ -29,8 +30,31 @@ const ChatScreen = ({ navigation }) => {
       text: message,
       sender: 'user',
     };
-    setMessages([...messages, newMessage]);
+
+    setMessages(prev => [...prev, newMessage]);
     setMessage('');
+
+    try {
+      const res = await axios.post('http://10.0.2.2:5000/chat', {
+        question: newMessage.text,
+      });
+
+      const reply = {
+        id: Date.now().toString() + '_bot',
+        text: res.data.answer || '⚠️ No response received.',
+        sender: 'bot',
+      };
+
+      setMessages(prev => [...prev, reply]);
+    } catch (error) {
+      console.error('❌ Error connecting to Flask server:', error);
+      const errorReply = {
+        id: Date.now().toString() + '_bot_error',
+        text: '⚠️ Could not connect to the legal assistant server.',
+        sender: 'bot',
+      };
+      setMessages(prev => [...prev, errorReply]);
+    }
   };
 
   const handleLogout = () => {
@@ -64,14 +88,14 @@ const ChatScreen = ({ navigation }) => {
         <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
-    <TouchableOpacity onPress={() => navigation.navigate('UserDetails')}>
-  <Avatar.Image
-    size={40}
-    source={require('../assets/pc1.jpg')}
-    style={styles.avatar}
-  />
-    </TouchableOpacity>
-</View>
+        <TouchableOpacity onPress={() => navigation.navigate('UserDetails')}>
+          <Avatar.Image
+            size={40}
+            source={require('../assets/pc1.jpg')}
+            style={styles.avatar}
+          />
+        </TouchableOpacity>
+      </View>
 
       <FlatList
         data={messages}
@@ -127,7 +151,7 @@ const styles = StyleSheet.create({
   logoutButton: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    backgroundColor: '#FF6347', // tomato red
+    backgroundColor: '#FF6347',
     borderRadius: 8,
     marginRight: 12,
   },
