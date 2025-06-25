@@ -61,7 +61,7 @@ export default function UserDetails({ navigation }) {
   if (!user) {
     return (
       <View style={styles.centered}>
-        <Text>Loading user data...</Text>
+        <Text style={{ color: '#fff' }}>Loading user data...</Text>
       </View>
     );
   }
@@ -69,8 +69,9 @@ export default function UserDetails({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Name:</Text>
-      <Text style={styles.value}>{user.displayName || 'No name set'}</Text>
-
+      <Text style={styles.value}>
+        {user.displayName || user.email?.split('@')[0] || 'No name set'}
+      </Text>
       <Text style={styles.label}>Email:</Text>
       <Text style={styles.value}>{user.email}</Text>
 
@@ -92,6 +93,7 @@ export default function UserDetails({ navigation }) {
             secureTextEntry
             mode="outlined"
             style={styles.input}
+            theme={{ colors: { text: '#fff', primary: '#1E90FF', background: '#1a1a1a', placeholder: '#aaa' } }}
           />
           <TextInput
             label="New Password"
@@ -100,14 +102,15 @@ export default function UserDetails({ navigation }) {
             secureTextEntry
             mode="outlined"
             style={styles.input}
+            theme={{ colors: { text: '#fff', primary: '#1E90FF', background: '#1a1a1a', placeholder: '#aaa' } }}
           />
-          <Button mode="contained" onPress={handleChangePassword}>
+          <Button mode="contained" onPress={handleChangePassword} style={styles.button}>
             Submit
           </Button>
         </>
       )}
 
-      <Button mode="outlined" onPress={handleLogout} style={styles.logoutBtn}>
+      <Button mode="outlined" onPress={handleLogout} style={styles.logoutBtn} textColor="#fff">
         Logout
       </Button>
     </View>
@@ -118,16 +121,18 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#0B0C10',
   },
   label: {
     fontWeight: 'bold',
     marginTop: 15,
     fontSize: 16,
+    color: '#ffffff',
   },
   value: {
     fontSize: 18,
     marginBottom: 10,
+    color: '#dcdcdc',
   },
   changePassButton: {
     marginVertical: 20,
@@ -139,12 +144,19 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 15,
   },
+  button: {
+    marginTop: 10,
+    backgroundColor: '#1E90FF',
+  },
   logoutBtn: {
     marginTop: 30,
+    borderColor: '#fff',
+    borderWidth: 1,
   },
   centered: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#0B0C10',
   },
 });

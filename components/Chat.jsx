@@ -15,7 +15,6 @@ import auth from '@react-native-firebase/auth';
 import axios from 'axios';
 
 const ChatScreen = ({ navigation }) => {
-  const theme = useTheme();
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([
     { id: '1', text: 'Welcome to Legal Obligator! How can I assist you?', sender: 'bot' },
@@ -68,7 +67,7 @@ const ChatScreen = ({ navigation }) => {
         Alert.alert('Logged Out', 'You have been logged out successfully');
         navigation.replace('Login');
       })
-      .catch((error) => {
+      .catch(error => {
         Alert.alert('Logout Error', error.message);
       });
   };
@@ -119,6 +118,7 @@ const ChatScreen = ({ navigation }) => {
         <TextInput
           mode="outlined"
           placeholder="Type your message"
+          placeholderTextColor="#888"
           value={message}
           onChangeText={setMessage}
           onContentSizeChange={(e) =>
@@ -126,8 +126,9 @@ const ChatScreen = ({ navigation }) => {
           }
           multiline
           style={[styles.textInput, { height: Math.max(40, inputHeight) }]}
-          outlineColor="#1E90FF"
-          activeOutlineColor="#1E90FF"
+          outlineColor="#FFFFFF"
+          activeOutlineColor="#4DA6FF"
+          theme={{ colors: { text: '#FFFFFF', primary: '#4DA6FF' } }}
         />
         <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
           <Text style={styles.sendButtonText}>Send</Text>
@@ -142,37 +143,37 @@ export default ChatScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f9fc',
+    backgroundColor: '#0B0C10',
   },
   header: {
-    backgroundColor: '#1E90FF',
+    backgroundColor: '#0B0C10',
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 15,
     paddingHorizontal: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#1C1F26',
   },
   headerText: {
     flex: 1,
     fontSize: 22,
     fontWeight: '600',
-    color: '#fff',
+    color: '#FFFFFF',
   },
   logoutButton: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    backgroundColor: '#FF6347',
+    backgroundColor: '#FF6B6B',
     borderRadius: 8,
     marginRight: 12,
   },
   logoutText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontWeight: 'bold',
     fontSize: 16,
   },
   avatar: {
-    backgroundColor: '#4682B4',
+    backgroundColor: '#1E90FF',
   },
   chatContent: {
     padding: 10,
@@ -184,38 +185,40 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   userBubble: {
-    backgroundColor: '#DCF8C6',
+    backgroundColor: '#4DA6FF',
     alignSelf: 'flex-end',
   },
   botBubble: {
-    backgroundColor: '#E1E1E1',
+    backgroundColor: '#1C1F26',
     alignSelf: 'flex-start',
   },
   messageText: {
     fontSize: 16,
+    color: '#FFFFFF',
   },
   typingIndicator: {
     paddingHorizontal: 16,
     fontStyle: 'italic',
-    color: '#666',
+    color: '#AAAAAA',
     marginBottom: 6,
   },
   inputContainer: {
     flexDirection: 'row',
     padding: 8,
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#0B0C10',
     borderTopWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#1C1F26',
   },
   textInput: {
     flex: 1,
     marginRight: 8,
-    backgroundColor: '#fff',
+    backgroundColor: '#1C1F26',
+    color: '#FFFFFF',
     textAlignVertical: 'top',
   },
   sendButton: {
-    backgroundColor: '#1E90FF',
+    backgroundColor: '#FFFFFF',
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 6,
@@ -223,7 +226,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sendButtonText: {
-    color: '#fff',
+    color: '#0B0C10',
     fontWeight: 'bold',
     fontSize: 16,
   },

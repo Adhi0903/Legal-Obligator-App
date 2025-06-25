@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity, Text, ScrollView } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import { TextInput, Button, Title } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 
@@ -10,33 +19,32 @@ export default function Register({ navigation }) {
   const [password, setPassword] = useState('');
   const [retypePassword, setRetypePassword] = useState('');
 
-const handleRegister = () => {
-  if (password !== retypePassword) {
-    alert("Passwords do not match!");
-    return;
-  }
+  const handleRegister = () => {
+    if (password !== retypePassword) {
+      Alert.alert('Error', 'Passwords do not match!');
+      return;
+    }
 
-  if (!email || !password) {
-    alert("Email and password are required.");
-    return;
-  }
-};
-auth()
-  .createUserWithEmailAndPassword(email, password)
-  .then((userCredential) => {
-    // Update displayName with the name user entered
-    return userCredential.user.updateProfile({
-      displayName: name, // 'name' is the input from your registration form
-    });
-  })
-  .then(() => {
-    Alert.alert('Success', 'Account created successfully!');
-    navigation.navigate('Login');
-  })
-  .catch(error => {
-    Alert.alert('Error', error.message);
-  });
+    if (!email || !password) {
+      Alert.alert('Error', 'Email and password are required.');
+      return;
+    }
 
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(userCredential => {
+        return userCredential.user.updateProfile({
+          displayName: name,
+        });
+      })
+      .then(() => {
+        Alert.alert('Success', 'Account created successfully!');
+        navigation.navigate('Login');
+      })
+      .catch(error => {
+        Alert.alert('Error', error.message);
+      });
+  };
 
   return (
     <KeyboardAvoidingView
@@ -45,7 +53,7 @@ auth()
       keyboardVerticalOffset={80}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
-        <Title style={[styles.title, { fontWeight: 'bold' }]}>Register</Title>
+        <Title style={styles.title}>Register</Title>
 
         <TextInput
           label="Name"
@@ -54,6 +62,7 @@ auth()
           mode="outlined"
           style={styles.input}
           autoCapitalize="words"
+          theme={inputTheme}
         />
 
         <TextInput
@@ -63,6 +72,7 @@ auth()
           mode="outlined"
           style={styles.input}
           autoCapitalize="none"
+          theme={inputTheme}
         />
 
         <TextInput
@@ -73,6 +83,7 @@ auth()
           keyboardType="email-address"
           style={styles.input}
           autoCapitalize="none"
+          theme={inputTheme}
         />
 
         <TextInput
@@ -82,6 +93,7 @@ auth()
           secureTextEntry
           mode="outlined"
           style={styles.input}
+          theme={inputTheme}
         />
 
         <TextInput
@@ -91,14 +103,21 @@ auth()
           secureTextEntry
           mode="outlined"
           style={styles.input}
+          theme={inputTheme}
         />
 
-        <Button mode="contained" onPress={handleRegister} style={styles.button}>
+        <Button
+          mode="contained"
+          onPress={handleRegister}
+          style={styles.button}
+          labelStyle={{ color: '#0B0C10', fontWeight: '600' }}
+          buttonColor="#FFFFFF"
+        >
           Register
         </Button>
 
         <View style={styles.row}>
-          <Text>Already have an account? </Text>
+          <Text style={{ color: '#FFFFFF' }}>Already have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Text style={styles.link}>Login</Text>
           </TouchableOpacity>
@@ -108,9 +127,19 @@ auth()
   );
 }
 
+const inputTheme = {
+  colors: {
+    primary: '#FFFFFF',
+    text: '#FFFFFF',
+    placeholder: '#AAAAAA',
+    background: '#1C1F26',
+  },
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#0B0C10',
   },
   scrollContainer: {
     padding: 20,
@@ -119,12 +148,17 @@ const styles = StyleSheet.create({
   title: {
     marginBottom: 20,
     alignSelf: 'center',
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    fontSize: 28,
+    padding: 20,
   },
   input: {
     marginBottom: 15,
   },
   button: {
     marginTop: 10,
+    borderRadius: 30,
   },
   row: {
     flexDirection: 'row',
@@ -132,6 +166,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   link: {
-    color: '#3498db',
+    color: '#4DA6FF',
+    fontWeight: '600',
   },
 });

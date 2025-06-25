@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
@@ -12,16 +11,20 @@ const { width, height } = Dimensions.get('window');
 
 const LandingPage = ({ navigation }) => {
   return (
-    <ImageBackground
-      source={require('../assets/bg.jpg')}
-      style={styles.background}
-      imageStyle={{ opacity: 0.3 }} // Makes image faded
-    >
+    <View style={styles.container}>
       <View style={styles.overlay}>
-        <Text style={styles.title}>Legal Obligator</Text>
+        {/* Title with neon glow on "Obligator" */}
+        <View style={styles.glowWrapper}>
+          <Text style={styles.title}>
+            <Text style={styles.legal}>Legal </Text>
+            <Text style={styles.obligator}>Obligator</Text>
+          </Text>
+        </View>
+
         <Text style={styles.subtitle}>
           Helping you stand up, speak out, and get what you deserve
         </Text>
+
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('AuthChoice')}
@@ -29,17 +32,18 @@ const LandingPage = ({ navigation }) => {
           <Text style={styles.buttonText}>Get Started</Text>
         </TouchableOpacity>
       </View>
-    </ImageBackground>
+    </View>
   );
 };
 
 export default LandingPage;
 
 const styles = StyleSheet.create({
-  background: {
+  container: {
     flex: 1,
     width,
     height,
+    backgroundColor: '#0B0C10', // Dark blue-black
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -47,27 +51,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
+  glowWrapper: {
+    marginBottom: 20,
+  },
   title: {
     fontSize: 36,
-    fontWeight: 'bold',
-    color: '#1E90FF',
-    marginBottom: 20,
+    fontWeight: '900',
     textAlign: 'center',
+    color: '#FFFFFF',
+  },
+  legal: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  obligator: {
+    color: '#FFFFFF',
+    textShadowColor: '#00BFFF',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 18,
+    fontWeight: 'bold',
   },
   subtitle: {
     fontSize: 18,
-    color: '#333',
+    color: '#CCCCCC',
     marginBottom: 40,
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#1E90FF',
+    backgroundColor: '#FFFFFF',
     paddingVertical: 14,
     paddingHorizontal: 30,
     borderRadius: 30,
   },
   buttonText: {
-    color: '#fff',
+    color: '#0B0C10',
     fontSize: 16,
     fontWeight: '600',
   },

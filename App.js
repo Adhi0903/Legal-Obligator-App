@@ -9,6 +9,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Chat from './components/Chat';
 import UserDetails from './components/UserDetails';
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -27,7 +28,17 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={user ? 'Chat' : 'Landing'}>
+      <Stack.Navigator
+        initialRouteName={user ? 'Chat' : 'Landing'}
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#0B0C10', // dark header
+          },
+          headerTintColor: '#FFFFFF', // white back arrow
+          headerTitle: '', // hide title
+          headerBackTitleVisible: false, // hide back text on iOS
+        }}
+      >
         <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
         <Stack.Screen name="AuthChoice" component={AuthChoice} />
         <Stack.Screen name="Login" component={Login} />

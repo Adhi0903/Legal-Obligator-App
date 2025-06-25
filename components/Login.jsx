@@ -25,7 +25,7 @@ export default function Login({ navigation }) {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         Alert.alert('Success', 'Logged in successfully!');
-        navigation.navigate('Chat'); // 👈 Change this to your post-login screen name
+        navigation.navigate('Chat');
       })
       .catch(error => {
         if (error.code === 'auth/user-not-found') {
@@ -43,7 +43,7 @@ export default function Login({ navigation }) {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <Title style={[styles.title, { fontWeight: 'bold' }]}>Login</Title>
+      <Title style={styles.title}>Login</Title>
 
       <TextInput
         label="Email"
@@ -53,6 +53,14 @@ export default function Login({ navigation }) {
         style={styles.input}
         autoCapitalize="none"
         keyboardType="email-address"
+        theme={{
+          colors: {
+            primary: '#FFFFFF',
+            text: '#FFFFFF',
+            placeholder: '#AAAAAA',
+            background: '#1C1F26',
+          },
+        }}
       />
       <TextInput
         label="Password"
@@ -61,13 +69,27 @@ export default function Login({ navigation }) {
         secureTextEntry
         mode="outlined"
         style={styles.input}
+        theme={{
+          colors: {
+            primary: '#FFFFFF',
+            text: '#FFFFFF',
+            placeholder: '#AAAAAA',
+            background: '#1C1F26',
+          },
+        }}
       />
-      <Button mode="contained" onPress={handleLogin} style={styles.button}>
+      <Button
+        mode="contained"
+        onPress={handleLogin}
+        style={styles.button}
+        labelStyle={{ color: '#0B0C10', fontWeight: '600' }}
+        buttonColor="#FFFFFF"
+      >
         Login
       </Button>
 
       <View style={styles.row}>
-        <Text>Don't have an account? </Text>
+        <Text style={{ color: '#FFFFFF' }}>Don't have an account? </Text>
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
           <Text style={styles.link}>Register</Text>
         </TouchableOpacity>
@@ -79,18 +101,24 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#0B0C10',
     padding: 20,
     justifyContent: 'center',
   },
   title: {
     marginBottom: 20,
     alignSelf: 'center',
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    fontSize: 28,
+    padding: 20,
   },
   input: {
     marginBottom: 15,
   },
   button: {
     marginTop: 10,
+    borderRadius: 30,
   },
   row: {
     flexDirection: 'row',
@@ -98,6 +126,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   link: {
-    color: '#3498db',
+    color: '#4DA6FF',
+    fontWeight: '600',
   },
 });
