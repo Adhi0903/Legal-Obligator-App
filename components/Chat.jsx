@@ -11,7 +11,6 @@ import {
   Alert,
 } from 'react-native';
 import { TextInput, Avatar, useTheme } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import auth from '@react-native-firebase/auth';
 import axios from 'axios';
 
@@ -21,6 +20,8 @@ const ChatScreen = ({ navigation }) => {
   const [messages, setMessages] = useState([
     { id: '1', text: 'Welcome to Legal Obligator! How can I assist you?', sender: 'bot' },
   ]);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [inputHeight, setInputHeight] = useState(40);
 
   const handleSend = async () => {
     if (!message.trim()) return;
@@ -33,9 +34,10 @@ const ChatScreen = ({ navigation }) => {
 
     setMessages(prev => [...prev, newMessage]);
     setMessage('');
+    setIsGenerating(true);
 
     try {
-      const res = await axios.post('http://10.0.2.2:5000/chat', {
+      const res = await axios.post('http://192.168.31.90:5000/chat', {
         question: newMessage.text,
       });
 
@@ -54,6 +56,8 @@ const ChatScreen = ({ navigation }) => {
         sender: 'bot',
       };
       setMessages(prev => [...prev, errorReply]);
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -84,7 +88,6 @@ const ChatScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Hi, Adhi</Text>
-
         <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
@@ -104,6 +107,10 @@ const ChatScreen = ({ navigation }) => {
         contentContainerStyle={styles.chatContent}
       />
 
+      {isGenerating && (
+        <Text style={styles.typingIndicator}>LegalBot is typing...</Text>
+      )}
+
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
@@ -114,12 +121,16 @@ const ChatScreen = ({ navigation }) => {
           placeholder="Type your message"
           value={message}
           onChangeText={setMessage}
-          style={styles.textInput}
+          onContentSizeChange={(e) =>
+            setInputHeight(e.nativeEvent.contentSize.height)
+          }
+          multiline
+          style={[styles.textInput, { height: Math.max(40, inputHeight) }]}
           outlineColor="#1E90FF"
           activeOutlineColor="#1E90FF"
         />
-        <TouchableOpacity onPress={handleSend}>
-          <Icon name="send" size={28} color="#1E90FF" />
+        <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
+          <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -183,6 +194,12 @@ const styles = StyleSheet.create({
   messageText: {
     fontSize: 16,
   },
+  typingIndicator: {
+    paddingHorizontal: 16,
+    fontStyle: 'italic',
+    color: '#666',
+    marginBottom: 6,
+  },
   inputContainer: {
     flexDirection: 'row',
     padding: 8,
@@ -195,5 +212,19 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 8,
     backgroundColor: '#fff',
+    textAlignVertical: 'top',
+  },
+  sendButton: {
+    backgroundColor: '#1E90FF',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sendButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
