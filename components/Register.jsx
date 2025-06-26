@@ -129,10 +129,10 @@ export default function Register({ navigation }) {
 
 const inputTheme = {
   colors: {
-    primary: '#FFFFFF',
-    text: '#FFFFFF',
-    placeholder: '#AAAAAA',
-    background: '#1C1F26',
+    primary: '#4DA6FF',      // Border and active underline
+    text: '#000000',         // Input text
+    placeholder: '#666666',  // Placeholder text
+    background: '#F0F0F0',   // Input background
   },
 };
 
@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 15,
+    backgroundColor: '#F0F0F0',
   },
   button: {
     marginTop: 10,

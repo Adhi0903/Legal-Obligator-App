@@ -55,13 +55,14 @@ export default function Login({ navigation }) {
         keyboardType="email-address"
         theme={{
           colors: {
-            primary: '#FFFFFF',
-            text: '#FFFFFF',
-            placeholder: '#AAAAAA',
-            background: '#1C1F26',
+            primary: '#4DA6FF',
+            text: '#000000',
+            placeholder: '#666666',
+            background: '#F0F0F0',
           },
         }}
       />
+
       <TextInput
         label="Password"
         value={password}
@@ -71,13 +72,14 @@ export default function Login({ navigation }) {
         style={styles.input}
         theme={{
           colors: {
-            primary: '#FFFFFF',
-            text: '#FFFFFF',
-            placeholder: '#AAAAAA',
-            background: '#1C1F26',
+            primary: '#4DA6FF',
+            text: '#000000',
+            placeholder: '#666666',
+            background: '#F0F0F0',
           },
         }}
       />
+
       <Button
         mode="contained"
         onPress={handleLogin}
@@ -115,6 +117,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 15,
+    backgroundColor: '#F0F0F0',
   },
   button: {
     marginTop: 10,

@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   Alert,
 } from 'react-native';
-import { TextInput, Avatar, useTheme } from 'react-native-paper';
+import { TextInput, Avatar } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import axios from 'axios';
 
@@ -25,28 +25,28 @@ const ChatScreen = ({ navigation }) => {
   const handleSend = async () => {
     if (!message.trim()) return;
 
-    const newMessage = {
+    const userMessage = {
       id: Date.now().toString(),
       text: message,
       sender: 'user',
     };
 
-    setMessages(prev => [...prev, newMessage]);
+    setMessages(prev => [...prev, userMessage]);
     setMessage('');
     setIsGenerating(true);
 
     try {
       const res = await axios.post('http://192.168.31.90:5000/chat', {
-        question: newMessage.text,
+        question: userMessage.text,
       });
 
-      const reply = {
+      const botReply = {
         id: Date.now().toString() + '_bot',
         text: res.data.answer || '⚠️ No response received.',
         sender: 'bot',
       };
 
-      setMessages(prev => [...prev, reply]);
+      setMessages(prev => [...prev, botReply]);
     } catch (error) {
       console.error('❌ Error connecting to Flask server:', error);
       const errorReply = {
@@ -118,7 +118,7 @@ const ChatScreen = ({ navigation }) => {
         <TextInput
           mode="outlined"
           placeholder="Type your message"
-          placeholderTextColor="#888"
+          placeholderTextColor="#666"
           value={message}
           onChangeText={setMessage}
           onContentSizeChange={(e) =>
@@ -126,9 +126,9 @@ const ChatScreen = ({ navigation }) => {
           }
           multiline
           style={[styles.textInput, { height: Math.max(40, inputHeight) }]}
-          outlineColor="#FFFFFF"
+          outlineColor="#CCCCCC"
           activeOutlineColor="#4DA6FF"
-          theme={{ colors: { text: '#FFFFFF', primary: '#4DA6FF' } }}
+          theme={{ colors: { text: '#000000', primary: '#4DA6FF', placeholder: '#666' } }}
         />
         <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
           <Text style={styles.sendButtonText}>Send</Text>
@@ -213,8 +213,8 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     marginRight: 8,
-    backgroundColor: '#1C1F26',
-    color: '#FFFFFF',
+    backgroundColor: '#F5F5F5',
+    color: '#000000',
     textAlignVertical: 'top',
   },
   sendButton: {
